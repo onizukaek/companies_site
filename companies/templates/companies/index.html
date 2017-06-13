@@ -5,7 +5,11 @@
 {% if companies %}
     <ul>
     {% for company in companies %}
-        <li>{{ company.company_name }} <a href="{% url 'companies:update' company.id %}">update</a>.</li>
+        <li>
+            {{ company.company_name }}
+            <a href="{% url 'companies:update' company.id %}">update</a>
+            <a href="{% url 'companies:delete' company.id %}">delete</a>
+        </li>
     {% endfor %}
     </ul>
 {% else %}

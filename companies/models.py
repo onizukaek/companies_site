@@ -22,7 +22,7 @@ class Company(models.Model):
     country_code = models.CharField("Country Code", max_length=10, blank=True, null=True)
 
     def __str__(self):
-        return self.company_name + '@user_id:' + str(self.user_id)
+        return '%s@user_id:%s' % (self.company_name, self.user_id)
 
 
 class CompanyForm(forms.ModelForm):

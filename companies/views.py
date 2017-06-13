@@ -59,3 +59,11 @@ def update(request, pk=None):
         if form.is_valid():
             return redirect('/companies/')
     return render(request, 'companies/update.html', {'form': form})
+
+
+@login_required
+def delete(request, pk=None):
+    if request.method == 'GET':
+        obj = get_object_or_404(Company, pk=pk)
+        obj.delete()
+        return redirect('/companies/')
