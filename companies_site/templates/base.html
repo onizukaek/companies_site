@@ -14,9 +14,9 @@
             <div class="nav-wrapper container"><img width="100px" src="{% static 'company.png' %}"/>
                 <ul class="right hide-on-med-and-down">
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'main:logout' %}">Logout</a></li>
                     <li><a href="{% url 'companies:index' %}">Companies</a></li>
                     <li><a href="{% url 'companies:add' %}">New Company</a></li>
+                    <li><a href="{% url 'main:logout' %}">Logout</a></li>
                 {% else %}
                     <li><a href="{% url 'main:index' %}">Login</a></li>
                 {% endif %}
