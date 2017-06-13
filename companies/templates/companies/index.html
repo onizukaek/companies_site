@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Companies</h1>
+<a href="{% url 'companies:add' %}">Add a new company</a>
+{% if companies %}
+    <ul>
+    {% for company in companies %}
+        <li>{{ company.company_name }} <a href="{% url 'companies:update' company.id %}">update</a>.</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No companies are available.</p>
+{% endif %}
+{% endblock content %}

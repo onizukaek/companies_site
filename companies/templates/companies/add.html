@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Add a company:</h1>
+<form action="{% url 'companies:save' %}" method="POST">
+{% csrf_token %}
+    <table>
+    {{CompanyForm}}
+    </table>
+    <input type="submit" value="Confirmed"/>
+</form>
+{% endblock content %}
