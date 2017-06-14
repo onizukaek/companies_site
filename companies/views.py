@@ -24,8 +24,7 @@ class IndexView(generic.ListView):
         """
         :return: all the companies created by current user ordered by creation date
         """
-        user_id = self.request.user.id
-        return Company.objects.filter(user_id__exact=user_id).order_by('-creation_date')
+        return Company.objects.filter(user_id__exact=self.request.user).order_by('-creation_date')
 
 
 @method_decorator(login_required, name='dispatch')
@@ -39,11 +38,10 @@ class CompanyUpdateView(UpdateView):
 @login_required
 def save(request):
     if request.POST:
-        current_user = request.user
         form = CompanyForm(request.POST)
         if form.is_valid():
             new_company = form.save(commit=False)
-            new_company.user_id = current_user.id
+            new_company.user_id = request.user
             new_company.save()
 
         return HttpResponseRedirect(reverse('companies:index'))
