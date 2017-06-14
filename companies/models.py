@@ -1,5 +1,4 @@
 from django.core.validators import RegexValidator
-from django.contrib.auth.models import User
 from django.db import models
 from django import forms
 
@@ -8,7 +7,6 @@ class Company(models.Model):
     company_name = models.CharField(max_length=50)
     creation_date = models.DateTimeField('date added', auto_now_add=True)
     update_date = models.DateTimeField('date updated', auto_now=True)
-    # user_id = models.ForeignKey(User)
     user_id = models.ForeignKey('auth.User', related_name='companies', on_delete=models.CASCADE)
     email = models.EmailField()
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: "
