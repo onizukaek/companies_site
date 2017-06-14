@@ -4,6 +4,6 @@
 <form action="{% url 'companies:update' company.id %}" method="POST">
 {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Update</button>
+    <button class="btn-large" type="submit">Update</button>
 </form>
 {% endblock content %}
