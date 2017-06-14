@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CompanySerializer(serializers.ModelSerializer):
-    user_id = serializers.ReadOnlyField(source='user_id.username')
+    owner = serializers.ReadOnlyField(source='owner.username')
 
     class Meta:
         model = Company

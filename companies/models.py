@@ -7,7 +7,7 @@ class Company(models.Model):
     company_name = models.CharField(max_length=50)
     creation_date = models.DateTimeField('date added', auto_now_add=True)
     update_date = models.DateTimeField('date updated', auto_now=True)
-    user_id = models.ForeignKey('auth.User', related_name='companies', on_delete=models.CASCADE)
+    owner = models.ForeignKey('auth.User', related_name='companies', on_delete=models.CASCADE)
     email = models.EmailField()
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: "
                                                                    "'+999999999'. Up to 15 digits allowed.")
@@ -22,10 +22,10 @@ class Company(models.Model):
     country_code = models.CharField("Country Code", max_length=10, blank=True, null=True)
 
     def __str__(self):
-        return '%s@user:%s' % (self.company_name, self.user_id)
+        return '%s@user:%s' % (self.company_name, self.owner)
 
 
 class CompanyForm(forms.ModelForm):
     class Meta:
         model = Company
-        exclude = ['creation_date', 'update_date', 'user_id']
+        exclude = ['creation_date', 'update_date', 'owner']

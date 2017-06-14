@@ -24,7 +24,7 @@ class IndexView(generic.ListView):
         """
         :return: all the companies created by current user ordered by creation date
         """
-        return Company.objects.filter(user_id__exact=self.request.user).order_by('-creation_date')
+        return Company.objects.filter(owner__exact=self.request.user).order_by('-creation_date')
 
 
 @method_decorator(login_required, name='dispatch')
@@ -41,7 +41,7 @@ def save(request):
         form = CompanyForm(request.POST)
         if form.is_valid():
             new_company = form.save(commit=False)
-            new_company.user_id = request.user
+            new_company.owner = request.user
             new_company.save()
 
         return HttpResponseRedirect(reverse('companies:index'))
@@ -54,7 +54,7 @@ def update(request, pk=None):
     obj = get_object_or_404(Company, pk=pk)
     form = CompanyForm(request.POST or None, request.FILES or None, instance=obj)
     if request.method == 'POST':
-        if form.user_id != request.user:
+        if form.owner != request.user:
             context = {'warning_message': 'Only the owner is allowed to update!'}
             return render(request, 'companies/warning.html', context)
         if form.is_valid():
@@ -66,7 +66,7 @@ def update(request, pk=None):
 def delete(request, pk=None):
     if request.method == 'GET':
         obj = get_object_or_404(Company, pk=pk)
-        if obj.user_id != request.user:
+        if obj.owner != request.user:
             context = {'warning_message': 'Only the owner is allowed to delete!'}
             return render(request, 'companies/warning.html', context)
         obj.delete()

@@ -18,7 +18,7 @@ class CompaniesList(APIView):
         :param format:
         :return:
         """
-        companies = Company.objects.filter(user_id__exact=request.user).order_by('-creation_date')
+        companies = Company.objects.filter(owner__exact=request.user).order_by('-creation_date')
         serializer = CompanySerializer(companies, many=True)
         return Response(serializer.data)
 
@@ -37,7 +37,7 @@ class CompaniesList(APIView):
 
     # Associating companies with users
     def perform_create(self, serializer):
-        serializer.save(user_id=self.request.user)
+        serializer.save(user=self.request.user)
 
 
 class CompanyDetail(APIView):
@@ -58,7 +58,7 @@ class CompanyDetail(APIView):
         :return:
         """
         company = self.get_object(pk)
-        if company.user_id != request.user:
+        if company.owner != request.user:
             return Response({'error': 'Only owner is allowed to read'},
                             status=status.HTTP_403_FORBIDDEN)
 
@@ -74,7 +74,7 @@ class CompanyDetail(APIView):
         :return:
         """
         company = self.get_object(pk)
-        if company.user_id != request.user:
+        if company.owner != request.user:
             return Response({'error': 'Only owner is allowed to edit'},
                             status=status.HTTP_403_FORBIDDEN)
 
@@ -93,7 +93,7 @@ class CompanyDetail(APIView):
         :return:
         """
         company = self.get_object(pk)
-        if company.user_id != request.user:
+        if company.owner != request.user:
             return Response({'error': 'Only owner is allowed to delete'},
                             status=status.HTTP_403_FORBIDDEN)
         company.delete()
