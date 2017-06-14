@@ -1,10 +1,9 @@
-from django.http import  Http404
+from django.http import Http404
 from django.contrib.auth.models import User
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import generics, status, permissions
 
-from api.permissions import IsOwner
 from companies.models import Company
 from .serializers import CompanySerializer, UserSerializer
 
@@ -42,7 +41,7 @@ class CompaniesList(APIView):
 
 
 class CompanyDetail(APIView):
-    permission_classes = (permissions.IsAuthenticated, IsOwner)
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get_object(self, pk):
         try:
@@ -59,6 +58,10 @@ class CompanyDetail(APIView):
         :return:
         """
         company = self.get_object(pk)
+        if company.user_id != request.user:
+            return Response({'error': 'Only owner is allowed to read'},
+                            status=status.HTTP_403_FORBIDDEN)
+
         serializer = CompanySerializer(company)
         return Response(serializer.data)
 
@@ -71,6 +74,10 @@ class CompanyDetail(APIView):
         :return:
         """
         company = self.get_object(pk)
+        if company.user_id != request.user:
+            return Response({'error': 'Only owner is allowed to edit'},
+                            status=status.HTTP_403_FORBIDDEN)
+
         serializer = CompanySerializer(company, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -86,6 +93,9 @@ class CompanyDetail(APIView):
         :return:
         """
         company = self.get_object(pk)
+        if company.user_id != request.user:
+            return Response({'error': 'Only owner is allowed to delete'},
+                            status=status.HTTP_403_FORBIDDEN)
         company.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 

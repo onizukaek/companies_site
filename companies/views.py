@@ -54,6 +54,9 @@ def update(request, pk=None):
     obj = get_object_or_404(Company, pk=pk)
     form = CompanyForm(request.POST or None, request.FILES or None, instance=obj)
     if request.method == 'POST':
+        if form.user_id != request.user:
+            context = {'warning_message': 'Only the owner is allowed to update!'}
+            return render(request, 'companies/warning.html', context)
         if form.is_valid():
             return redirect('/companies/')
     return render(request, 'companies/update.html', {'form': form})
@@ -63,5 +66,8 @@ def update(request, pk=None):
 def delete(request, pk=None):
     if request.method == 'GET':
         obj = get_object_or_404(Company, pk=pk)
+        if obj.user_id != request.user:
+            context = {'warning_message': 'Only the owner is allowed to delete!'}
+            return render(request, 'companies/warning.html', context)
         obj.delete()
         return redirect('/companies/')
