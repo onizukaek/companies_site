@@ -8,13 +8,13 @@
     <input id="username" type="text" name="username">
     <label for="password">Password:</label>
     <input id="password" type="password" name="password">
-    <button type="submit">Login</button>
+    <button class="btn-large" type="submit">Login</button>
 </form>
 <h3>Or</h3>
 <h1>Sign up</h1>
 <form method="POST" role="form" action="{% url 'main:signup'%}">
 {% csrf_token %}
 {{ form.as_p }}
-<button type="submit">Sign up</button>
+<button class="btn-large" type="submit">Sign up</button>
 </form>
 {% endblock content %}
