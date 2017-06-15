@@ -16,6 +16,4 @@ class CompanySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Company
-        exclude = ['creation_date', 'update_date']
-
-
+        fields = '__all__'

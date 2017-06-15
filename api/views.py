@@ -31,13 +31,9 @@ class CompaniesList(APIView):
         """
         serializer = CompanySerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(owner=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    # Associating companies with users
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
 
 
 class CompanyDetail(APIView):
