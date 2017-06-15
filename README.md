@@ -57,7 +57,8 @@ A basic authentication uname/password is used for the access, an example
 with curl:
 
 `curl --user uname:password http://0.0.0.0:8000/api/users/`
-This fetches the users list
+This fetches the users list.
+
 Or simply open it in your browser, the django rest_framework provides
 some views to make the requests simpler.
 
